@@ -18,7 +18,7 @@ function Login() {
     nav('/Registration');
   };
   const login = (data) => {
-    axios.post('https://itransition-my-course-project.herokuapp.com', data).then((response) => {
+    axios.post('https://itransition-my-course-project.herokuapp.com/authentification//authentification/login', data).then((response) => {
       if (response.data.error) {
         setErrors(response.data.error);
       } else {
