@@ -1,8 +1,4 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import ReactTags from 'react-tag-autocomplete'
-import axios from 'axios';
-
 
 function CustomTags ({ tags, setTags, suggestionsTags }) {
   

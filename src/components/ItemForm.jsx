@@ -2,22 +2,11 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 
-
-import CustomTags from './TagAutoComplete';
-
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import Form from 'react-bootstrap/Form';
-
-
-
-import { useAuth } from '../hooks';
-
-
 
 const createFormField = (field, state, handleChange, idx) => {
   switch (field.type) {
@@ -209,7 +198,6 @@ function ItemForm({ collectionData, items, setItems}) {
           />
       {state.map((field, idx) => createFormField(field, state, changeState, idx))}
       </Form.Group>
-      <CustomTags tags={tags} setTags={setTags} suggestionsTags={tagList}/>
       <div className="text-center mt-3">
       <Button type="submit" className="mx-2">Create</Button>
       <Button variant="secondary" className="mx-2" onClick={handleClose}>
