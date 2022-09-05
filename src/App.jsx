@@ -45,7 +45,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("https://itransition-my-course-project.herokuapp.com/auth", {
+      .get("https://itransition-my-course-project.herokuapp.com/authentification/auth", {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
