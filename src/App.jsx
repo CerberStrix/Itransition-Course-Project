@@ -4,6 +4,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Outlet,
+  Navigate,
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from './components/Navigation';
@@ -16,8 +18,22 @@ import AuthContext from './contexts/AuthContext.jsx';
 
 import axios from "axios";
 import Collection from './components/Collection.jsx'
+import ItemForm from './components/ItemForm';
 
-const AuthProvider = ({ children }) => {
+
+const ProtectedRoute = ({
+  isAllowed,
+  redirectPath = '/home',
+  children,
+}) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+  return children ? children : <Outlet />;
+};
+
+function App() {
+  const [loggedIn, setLoggedIn] = useState(null);
   const [authState, setAuthState] = useState({ id: 0, email: '', name: '', permission: 'guest' });
 
   const logIn = (data) => {
@@ -51,29 +67,23 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authState, logIn, logOut }}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
-
-function App() {
-  return (
     <div className="App">
-      <AuthProvider>
       <Router>
+      <AuthContext.Provider value={{ authState, logIn, logOut }}>
         <Navigation/>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration />} />
-          <Route path="/user" element={<UserPage />} />
+          <Route path="/user" element={
+            <ProtectedRoute redirectPath="/home" isAllowed={authState.permission === 'user'}>
+              <UserPage />
+            </ProtectedRoute>} />    
           <Route path="/user/:collectionId" element={<Collection />} />
+          <Route path="*" element={<p>There's nothing here: 404!</p>} />
         </Routes>
-    
-   
+      </AuthContext.Provider>
     </Router>
-    </AuthProvider>
     </div>
   );
 }

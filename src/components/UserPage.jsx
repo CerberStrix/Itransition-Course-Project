@@ -6,7 +6,6 @@ import { storage } from "../firebase"
 import { v4 } from 'uuid';
 
 
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -21,32 +20,33 @@ import Placeholder from '../static/placeholder.png'
 
 function UserPage() {
 
+  let navigate = useNavigate();
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [collectionList, setCollectionList] = useState([]);
 
-  const handleState = (data) => {
-    setCollectionList([...collectionList, data]);
+  const handleState = (fetchData, data) => {
+    setCollectionList([...collectionList, fetchData]);
   };
 
   const handleFetch = async (data) => {
     const response = await axios.post('https://itransition-my-course-project.herokuapp.com/collection/createCollection', data);
+    console.log(data)
     return response.data
   };
 
   const handleImageUpload = async (image) => {
     let url = 'empty';
-    if (image) {
+    if (image !== 'empty') {
       const imageRef = ref(storage, `images/${image.name + v4()}`);
       const snapshot = await uploadBytes(imageRef, image);
       url = await getDownloadURL(snapshot.ref);
     }
     return url;
   }
-
-  let navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,18 +58,19 @@ function UserPage() {
       setCollectionList(response.data);
     }
     fetchData()
-    
   }, []);
 
   const handleClick = (id) => {
-    navigate(`/user/${id}`, { replace: true });
+    navigate(`/user/${id}`);
   }
 
   const deleteCollection = async (targetId, imageUrl) => {
     try {
       await axios.delete(`https://itransition-my-course-project.herokuapp.com/collection/delete/${targetId}`);
-      const desertRef = ref(storage, imageUrl);
-      await deleteObject(desertRef)
+      if ( imageUrl !== 'empty') {
+        const desertRef = ref(storage, imageUrl);
+        await deleteObject(desertRef)
+      }
       const filteredCollections = collectionList.filter(({ id }) => id !== targetId);
       setCollectionList(filteredCollections)
     } catch {
@@ -89,14 +90,14 @@ function UserPage() {
       </Button>
       <Row className="mt-5 g-4">
       {collectionList.map((collection) => {
-        const date = new Date(collection.createdAt).toDateString();
+      
         const url = collection.imageUrl === "empty" ? Placeholder : `${collection.imageUrl}`;
         return (
         <Col key={collection.id} xs={{ span: 12 }} sm={{ span: 6 }} lg={{ span: 4 }} xl={{ span: 3 }}>
           <Card className="my-3 mx-3">
             <Card.Img variant="top" src={url} />
             <Card.Body>
-              <p style={{ textAlign: 'center' }}>Дата: {date}</p>
+              <p style={{ textAlign: 'center' }}>Дата: {new Date(collection.createdAt).toDateString()}</p>
               <Card.Title style={{size: "10rem"}}>{collection.name}</Card.Title>
               <Card.Text>
                 Theme: {collection.theme}

@@ -42,7 +42,7 @@ const defaultState = {
 };
 
 const collectionSchema = yup.object().shape({
-  name: yup.string().min(3).max(15).required(),
+  name: yup.string().min(3).max(25).required(),
   theme: yup.string().required(),
 });
 
@@ -61,7 +61,7 @@ function NewCollectionForm({handleClose, handleState, handleFetch, handleImageUp
   const [imagePreview, setImgPreview] = useState(state.imageUrl);
   const [imageError, setImgError] = useState(state.imageError);
   const [imageUpload, setImageUpload] = useState(state.imageUrl);
-  const [prevImg, setPrevImg] = useState(null);
+  const [prevImg, setPrevImg] = useState(state.imageUrl);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -106,10 +106,8 @@ function NewCollectionForm({handleClose, handleState, handleFetch, handleImageUp
       imageUrl: url,
       fields: fields,
     } 
-    await handleFetch(collectionData);
-    console.log(collectionData)
-    handleState(collectionData);
-
+    const data = await handleFetch(collectionData);
+    handleState(data, collectionData);
     handleClose()
   }
 

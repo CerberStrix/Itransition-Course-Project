@@ -23,7 +23,7 @@ function Login() {
         setErrors(response.data.error);
       } else {
         logIn(response.data);
-        nav('/');
+        nav('/user');
       }
     });
   };

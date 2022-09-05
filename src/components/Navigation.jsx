@@ -54,7 +54,6 @@ function Navigation() {
   return (
     <Navbar bg="ligth" variant="light" expand="lg" className='navbar-space'>
       <Container fluid>
-        <Navbar.Brand href="#">Логотип</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -62,7 +61,7 @@ function Navigation() {
             style={{ maxHeight: '160px' }}
             navbarScroll
           >
-            <Nav.Link as={Link} to="/">Домой</Nav.Link>
+            <Nav.Link as={Link} to="/home">Домой</Nav.Link>
             {AuthButton(navigate)}
           </Nav>
           
