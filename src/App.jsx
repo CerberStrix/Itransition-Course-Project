@@ -9,7 +9,6 @@ import {
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from './components/Navigation';
-import Footer from './components/Footer';
 import Home from './components/Home';
 import Registration from './components/Registration';
 import Login from './components/Login';
@@ -18,7 +17,6 @@ import AuthContext from './contexts/AuthContext.jsx';
 
 import axios from "axios";
 import Collection from './components/Collection.jsx'
-import ItemForm from './components/ItemForm';
 
 
 const ProtectedRoute = ({
