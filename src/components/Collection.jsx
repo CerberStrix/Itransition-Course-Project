@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useHistory, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import MDEditor from "@uiw/react-md-editor";
 import { ref, deleteObject, getDownloadURL, uploadBytes } from "firebase/storage";
@@ -20,7 +20,6 @@ import Table from 'react-bootstrap/Table';
 import Placeholder from '../static/placeholder.png'
 
 function Collection() {
-  const nav = useNavigate();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -34,7 +33,7 @@ function Collection() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const collectionResponse = await axios.get(`https://itransition-my-course-project.herokuapp.com/${collectionId}`, {
+      const collectionResponse = await axios.get(`https://itransition-my-course-project.herokuapp.com/collection/${collectionId}`, {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
